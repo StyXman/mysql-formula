@@ -110,8 +110,13 @@ mysqld:
       - cmd: mysql_initialize
 {% endif %}
     - watch:
+{% if os_family == 'Debian' %}
+      - file: mysql_config
+      - pkg: {{ mysql.server }}
+{% else %}
       - pkg: {{ mysql.server }}
       - file: mysql_config
+{% endif %}
 {% if "config_directory" in mysql and "server_config" in mysql %}
       - file: mysql_server_config
 {% endif %}
